@@ -20,8 +20,8 @@ contract MyAccount is Ownable, IAccount {
 
     address private immutable i_entryPoint;
 
-    modifier onlyEntryPointAllownace() {
-        if (msg.sender != i_entryPoint) {
+    modifier onlyEntryPointOrOwnerAllownace() {
+        if ((msg.sender != i_entryPoint) && (msg.sender != owner())) {
             revert Not_Allowed();
         }
         _;
@@ -42,7 +42,7 @@ contract MyAccount is Ownable, IAccount {
      */
     function execute(address receiver, bytes calldata funcCalldata, uint256 amountToTransfer)
         public
-        onlyEntryPointAllownace
+        onlyEntryPointOrOwnerAllownace
     {
         (bool callSuccess,) = payable(receiver).call{value: amountToTransfer}(funcCalldata);
         if (!callSuccess) {
@@ -57,7 +57,7 @@ contract MyAccount is Ownable, IAccount {
      */
     function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds)
         external
-        onlyEntryPointAllownace
+        onlyEntryPointOrOwnerAllownace
         returns (uint256 validationData)
     {
         validationData = _validateSignature(userOp, userOpHash);
@@ -88,5 +88,9 @@ contract MyAccount is Ownable, IAccount {
             (bool callSuccess,) = payable(msg.sender).call{value: missingAccountFunds, gas: type(uint256).max}("0x0");
             (callSuccess);
         }
+    }
+
+    function getEntryPoint() public view returns(address) {
+        return i_entryPoint;
     }
 }
