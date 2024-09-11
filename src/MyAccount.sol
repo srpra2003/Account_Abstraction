@@ -90,7 +90,7 @@ contract MyAccount is Ownable, IAccount {
         }
     }
 
-    function getEntryPoint() public view returns(address) {
+    function getEntryPoint() public view returns (address) {
         return i_entryPoint;
     }
 }

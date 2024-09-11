@@ -33,7 +33,7 @@ contract HelperConfig is Script {
         return netConfig;
     }
 
-    function getSepoliaMainnetConfig() public pure returns (NetworkConfig memory) { 
+    function getSepoliaMainnetConfig() public pure returns (NetworkConfig memory) {
         NetworkConfig memory netConfig = NetworkConfig({
             entryPoint: 0x0576a174D229E3cFA37253523E645A78A0C91B57,
             account: 0xDB005dF9b15b01A01288AdC68A1253fDb4961c1a // My wallet Address hardcoded
